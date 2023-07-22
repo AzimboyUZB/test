@@ -1,7 +1,8 @@
 import { categoriesUrl } from '@/helpers/urls';
 import React, { useMemo } from 'react'
-import { Select } from '..'
 import useFetch from './../../hooks/useFetch';
+import SelectComponent from '../Select';
+import { GlobalOutlined } from '@ant-design/icons';
 
 export default function Header() {
   const { data, loading } = useFetch(categoriesUrl)
@@ -9,7 +10,7 @@ export default function Header() {
   const categories = useMemo(() => {
     return data === null
       ? []
-      : data.trivia_categories.map((item) => ({
+      : data?.trivia_categories?.map((item) => ({
         label: item.name,
         value: item.id,
       }))
@@ -40,16 +41,14 @@ export default function Header() {
       value: 'boolean',
     },
   ]
-
-  console.log(data);
   return (
     <div className="header">
       <div className="container-header">
-        <h1>Logo</h1>
+        <h1><GlobalOutlined />    Logo</h1>
         <div className='box-select'>
-          <Select options={difficultyData} name='difficulty' />
-          <Select options={typeData} name='type' />
-          <Select options={categories} name='category' loading={loading} />
+          <SelectComponent style={{width: "150px"}} options={difficultyData} name='difficulty' defaultValue="Difficulty"/>
+          <SelectComponent style={{width: "150px"}} options={typeData} name='type' defaultValue="Type"/>
+          <SelectComponent style={{width: "300px"}} options={categories} name='category' loading={loading} defaultValue="Category"/>
         </div>
       </div>
     </div>
